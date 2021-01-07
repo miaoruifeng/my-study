@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="./vue@3.0.5.js"></script>
+<script>
+  /*
+    1、vue3中全部采用函数式写法，替换了原来类的写法，
+    2、移除了原有的生命周期函数，和data、computed、watch、method等vue2中的对象，去掉了this, 并且去除了过滤器api -> filter
+    3、vue3源码全部采用ts编写，编码中实现了对ts更好的支持
+    4、vue3完全兼容vue2，在vue3中依然可以按照vue2的方式去写代码，而且两种写法可以同时存在，
+    5、组件中同时存在两种写法时，当setup返回值中定义的方法和methods中的方法同名时，会抛出错误。
+    定义的数据和data定义的数据字段相同时，会被data定义的字段覆盖
+    6、vue3采用proxy的方式实现数据代理，只会代理第一层数据   避免了vue2中对data的深层递归，提升了组件渲染性能
+  */
+  const { reactive } = Vue
+  const App = {
+    template: `<h3 class="message">{{data.obj.message}}</h3>`,
+    setup() {
+      /*
+        返回的state是一个proxy对象，默认只会对data进行代理 那么vue3是怎么实现深层数据劫持呢，例如我们要修改obj那么是怎么监听到obj的修改呢
+        当我们要对深层对象obj进行修改时，会调用 state.data 的get方法，在get方法中会对state.data 进行代理，劫持state.data中的属性，
+        get方法返回的不是state.data本身，而是被proxy代理过的对象，从而巧妙的实现了深层数据劫持，
+        在用到该属性的时候一定会调用父级的get方法，这时候才会去劫持属性的get和set方法
+      */
+      const state = reactive({
+        data: {
+          obj: {
+            message: 'Hello Vue3.0'
+          }
+        }
+      })
+      return { ...state }
+    }
+  }
+  Vue.createApp(App).mount('#app')
+</script>
+</html>

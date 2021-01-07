@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="./vue@3.0.5.js"></script>
+<script>
+  const { reactive } = Vue
+  const App = {
+    template: `
+      <div>
+        <input v-model="state.value" />{{state.value}}
+        <h3>{{state.test}}</h3>
+      </div>`,
+    // vue 2.0 的data 向下兼容 仍然可以用 
+    // <h3>{{test}}</h3>
+    // data() {
+    //   return {
+    //     test: 'test111'
+    //   }
+    // },
+    setup(props, ctx) {
+      // console.log(props)
+      // console.log(ctx)
+      const state = reactive({
+        value: '',
+        test: 'text'
+      })
+      return { state }
+    }
+  }
+  Vue.createApp(App).mount('#app')
+</script>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="./vue@3.0.5.js"></script>
+<script>
+  /*
+    前面提到的 reactive 创建的响应式对象 在模板中访问的话，则需要state.xxx，
+    这样访问属性确实有点麻烦，vue3提供的 toRefs 正是为我们解决这个问题的，
+    toRefs把一组的响应式对象拆成单个的响应式对象，就能够在模板中直接访问了
+  */
+  const { reactive, toRefs } = Vue
+  const App = {
+    template: `
+      <div>
+        <h3>count: {{count}}</h3>
+        <button @click="handlerCountAdd">Click++</button>
+      </div>`,
+    setup() {
+      const state = reactive({
+        count: 0
+      })
+      const handlerCountAdd = () => {
+        state.count++
+      }
+      return {
+        ...toRefs(state),
+        handlerCountAdd
+      }
+    }
+  }
+  Vue.createApp(App).mount('#app')
+</script>
+</html>

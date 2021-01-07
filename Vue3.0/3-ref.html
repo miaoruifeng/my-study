@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="./vue@3.0.5.js"></script>
+<script>
+  //  ref ，vue3提供的ref让我们有机会创建单个的响应式的对象，在setup函数中return出去之后，在模板中可直接访问
+  const { ref } = Vue
+  const App = {
+    template: `
+      <div>
+        <h3>count: {{value}}</h3>
+      </div>`,
+    setup() {
+      const value = ref(123)
+      return { value }
+    }
+  }
+  Vue.createApp(App).mount('#app')
+</script>
+</html>

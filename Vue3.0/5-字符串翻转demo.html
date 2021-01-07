@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="./vue@3.0.5.js"></script>
+<script>
+  const { reactive, toRefs, computed } = Vue
+  const App = {
+    template: `
+      <div>
+        value: <input v-model="value" />
+        <br/>
+        rvalue: {{rvalue}}
+      </div>`,
+    setup() {
+      const state = reactive({
+        value: '',
+        // 计算属性 computed
+        rvalue: computed(() =>
+          state.value.split('').reverse().join('')
+        )
+        // rvalue: computed(() => {
+        //   return state.value.split('').reverse().join('')
+        // })
+      })
+      return {
+        ...toRefs(state)
+      }
+    }
+  }
+  Vue.createApp(App).mount('#app')
+</script>
+</html>
